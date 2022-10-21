@@ -65,7 +65,7 @@ export async function setupWeb3({
       } else {
         provider = getJsonRpcProvider(customProvider)
       }
-      signer = provider.getSigner()
+      signer = new provider.getSigner()
     } else {
       // handle EIP 1193 provider
       provider = getWeb3Provider(customProvider)
@@ -97,7 +97,7 @@ export async function setupWeb3({
 
   if (window && window.ethereum) {
     provider = getWeb3Provider(window.ethereum)
-    signer = provider.getSigner()
+    signer = new provider.getSigner()
     if (window.ethereum.on && reloadOnAccountsChange) {
       address = await signer.getAddress()
       window.ethereum.on('accountsChanged', async function (accounts) {
@@ -111,7 +111,7 @@ export async function setupWeb3({
   } else if (window.web3 && window.web3.currentProvider) {
     provider = getWeb3Provider(window.web3.currentProvider)
     const id = (await provider.getNetwork()).chainId
-    signer = provider.getSigner()
+    signer = new provider.getSigner()
     return { provider, signer }
   } else {
     try {
@@ -178,7 +178,7 @@ export async function getProvider() {
 export async function getSigner() {
   const provider = await getWeb3()
   try {
-    const signer = provider.getSigner()
+    const signer = new provider.getSigner()
     await signer.getAddress()
     return signer
   } catch (e) {
